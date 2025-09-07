@@ -1,0 +1,14 @@
+version: "3.8" # Especifica la versión de la sintaxis de Docker Compose
+
+services: # Aquí definimos nuestros contenedores (servicios)
+  backend: # El nombre de nuestro servicio de backend
+    build: ./backend # Le dice a Compose que construya la imagen usando el Dockerfile de la carpeta ./backend
+    ports:
+      - "3000:5000" # Mapea el puerto 3000 de tu PC al 5000 del contenedor (como hicimos antes)
+
+  frontend: # El nombre de nuestro servicio de frontend
+    build: ./frontend # Construye la imagen usando el Dockerfile de la carpeta ./frontend
+    ports:
+      - "8080:80" # Mapea el puerto 8080 de tu PC al 80 del contenedor
+    depends_on:
+      - backend # ¡Esto es clave! Le dice al frontend que no arranque hasta que el backend esté listo.
