@@ -1,22 +1,23 @@
-// backend/server.js
-
 const express = require("express");
 const cors = require("cors");
-const path = require("path");
 
 const app = express();
-const PORT = process.env.PORT || 5000;
 
 // Middlewares
-app.use(cors()); // Habilita CORS para permitir la comunicación con el frontend
+app.use(cors());
 app.use(express.json());
 
-// Servir archivos estáticos del frontend en producción
-if (process.env.NODE_ENV === "production") {
-  app.use(express.static(path.join(__dirname, "../frontend/dist")));
+// Ruta para comprobar que el servidor API está vivo
+app.get("/", (req, res) => {
+  res.send("¡El servidor de la API está funcionando!");
+});
 
-  app.get("*", (req, res) => {
-    res.sendFile(path.resolve(__dirname, "../frontend/dist", "index.html"));
-  });
-}
+// La ruta de tu API que necesitamos
+app.post("/api/save_data", (req, res) => {
+  const data = req.body;
+  console.log("Datos recibidos:", data);
+  res.status(200).json({ message: "Datos recibidos correctamente" });
+});
+
+// Exportamos la app para que Vercel la use
 module.exports = app;
